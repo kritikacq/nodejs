@@ -10,3 +10,5 @@ console.log(add(2, 3));
 // console.log(math.sub(2,4))
 
 //console.log(window);
+
+// day 2 work

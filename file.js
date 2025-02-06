@@ -40,11 +40,12 @@ fs.appendFileSync(".\contacts.txt", "Hey,There\n");
 //         console.log(err);
 //     }
 //     else {
-//         // Get the file contents after the append operation 
+//         // Get the file contents after the append operation
 //         console.log("\nFile Contents of file after append:",
 //             fs.readFileSync(".\contacts.txt", "utf8"));
 //     }
-//  }); 
+//  });
 
+// day 2 work
  
  

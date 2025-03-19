@@ -1,3 +1,56 @@
+//day 3
+ const server = http.createServer((req, res) => {
+//     console.log(req);
+//              if (req.url === '/favicon.ico') return res.end();
+//             const myUrl = url.parse(req.url, true);
+//      console.log(myUrl);
+//     const log = `${Date.now()}:${req.method}:New request from ${req.url}\n`;
+//             fs.appendFile("log.txt", log, (err, data) => {
+//                 switch (myUrl.pathname) {
+//                     case '/':
+//                         //for handling methods
+//                         if (req.method === 'GET') {
+//                             res.end('Hello From Server\n');
+//                         } else if (req.method === 'POST') {
+//                             res.end('Data Posted\n');
+//                         } else {
+//                             res.end('Method Not Allowed\n');
+//                         }
+//                         //res.end('Hello From Server\n');
+//                         break;
+//                     case '/about':
+                        
+//                         const username = myUrl.query.username;
+//                         res.end(`hi ${username}\n`);
+//                         //res.end('About Us\n');
+//                         break;
+//                     case '/search':
+//                         const search = myUrl.query.search_query;
+//                         res.end(`Search results for ${search}\n`);
+//                     case '/signup':
+//                         if (req.method === 'GET')
+//                             res.end('This is a Signup Form\n');
+//                         else if (req.method === 'POST') {
+//                             res.end('Data Posted\n');
+//                         }
+                        
+//                     default:
+//                         res.end('404 Page Not Found\n');
+//                 }
+//             });
+//             console.log('Request received');
+       
+//         }
+//     );
+
+// server.listen(8000, () => {
+//     console.log(`Server running at http://8000/`);
+// });
+
+
+
+
+
 //day 4
 // const express = require('express');
 // const app = express();
@@ -7,50 +60,41 @@
 // app.get('/about', (req, res) => {
 //     return res.send( 'hey' + req.query.username);
 // });
-// // function myHandler
-
-
-
-//day 5
-// const express = require('express');
-// const users = require("./MOCK_DATA.json");
-// const app = express();
-// const port = 8000;
-// //middleware
-// app.use(express.urlencoded({ extended: true }));
-// app.get('/api/users', (req, res) => {
-//     return res.json(users);
+const myServer = http.createServer(app);
+server.listen(8000, () => {
+//     console.log(`Server running at http://8000/`);
 // });
 
-// app.get('/users', (req, res) => {
-//     const html = `
-//     <ul> 
-//     ${users.map((user) => `<li>${user.first_name}</li>`).join('')}
-//     </ul>
-//     `;
-//     res.send(html);
-//     //console.log(`Server  is running at http://localhost:${port}/`);
+app.listen(80000,()=> console.log("server started"));
+
+//day 7
+function dosomething() {
+    throw new Error(
+        'a error is thrown from dosomething');
+}
+
+function init() {
+    try {
+        dosomething();
+    }
+    catch (e) {
+        console.log(e);
+    }
+    console.log(
+        "After successful error handling");
+}
+
+init();
+
+
+
+// fs.readFile('code.txt', function (err, data) {
+//     if (err) {
+//         console.error(err);
+//     }
+//     else {
+//         console.log(data.toString());
+//     }
 // });
 
-// app.route("/api/users/:id").get((req, res) => {
-//     const id = Number(req.params.id);
-//     const user = users.find((user) => user.id === id);
-//     return res.json(user);
-// })
-//     .patch((req, res) => {
-//         return res.json({ message: 'User Updated' });
-//     })
-//     .delete((req, res) => {
-//         return res.json({ message: 'User Deleted' });
-//     });
-// app.post('/api/users', (req, res) => {
-//     const body = req.body;
-//     body.id = users.length + 1;
-//     users.push(body);
-//     fs.writeFile("MOCK_DATA.json", JSON.stringify(users), (err, data) => {
-//         return res.json({ message: 'User Created'});
-//     });
-// });
-// app.listen(port, () => {
-//     console.log(`Server running at http://localhost:${port}/`)
-// });
+// console.log("Program Ended");

@@ -1,78 +1,33 @@
 const http = require('http');
-const fs = require("fs");
-// const hostname = 'localhost';
-// const port = 8000;
-// // const url = require("url");
-// const express = require('express');
-// const app = express();
-// app.get('/', (req, res) => {
-//     return res.send('Hello From Express\n');
-// });
-// app.get('/about', (req, res) => {
-//     return res.send( 'hey' + req.query.username);
-// });
-// // // function myHandler(req, res) {
-// //     (req, res) => {
-// //         if (req.url === '/favicon.ico') return res.end();
-// //         const log = `${Date.now()}:${req.method}:New request from ${req.url}\n`;
-// //         const myUrl = url.parse(req.url, true);
-// //         console.log(myUrl);
-// //         fs.appendFile("log.txt", log, (err, data) => {
-// //             switch (myUrl.pathname) {
-// //                 case '/':
-// //                     //for handling methods
-// //                     if (req.method === 'GET') {
-// //                         res.end('Hello From Server\n');
-// //                     } else if (req.method === 'POST') {
-// //                         res.end('Data Posted\n');
-// //                     } else {
-// //                         res.end('Method Not Allowed\n');
-// //                     }
-// //                     //res.end('Hello From Server\n');
-// //                     break;
-// //                 case '/about':
-                    
-// //                     const username = myUrl.query.username;
-// //                     res.end(`hi ${username}\n`);
-// //                     //res.end('About Us\n');
-// //                     break;
-// //                 case '/search':
-// //                     const search = myUrl.query.search_query;
-// //                     res.end(`Search results for ${search}\n`);
-// //                 case '/signup':
-// //                     if (req.method === 'GET')
-// //                         res.end('This is a Signup Form\n');
-// //                     else if (req.method === 'POST') {
-// //                         res.end('Data Posted\n');
-// //                     }
-                    
-// //                 default:
-// //                     res.end('404 Page Not Found\n');
-// //             }
-// //         });
-// //         //console.log('Request received');
-   
-// //     }
-// // }
-// const server = http.createServer(app);
 
-// server.listen(port, hostname, () => {
-//     console.log(`Server running at http://${hostname}:${port}/`);
-// });
 
+//day 5
 const express = require('express');
 const users = require("./MOCK_DATA.json");
+const fs = require("fs");
+
 const app = express();
-const port = 8000;
-//middleware
+const port = 3000;
+//middleware (day 6)
 app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+    console.log(`Request received for ${req.url}`);
+    next();
+});
+app.use((req, res, next) => {
+    console.log(`Request Type: ${req.method}`);
+    fs.appendFile("log.txt", `Request Type: ${req.method}\n ${Date.now()}:${req.ip}:${req.path}`, (err, data) => {
+    next();
+}
+    );
+});
 app.get('/api/users', (req, res) => {
     return res.json(users);
 });
 
 app.get('/users', (req, res) => {
     const html = `
-    <ul> 
+    <ul>
     ${users.map((user) => `<li>${user.first_name}</li>`).join('')}
     </ul>
     `;
@@ -91,16 +46,26 @@ app.route("/api/users/:id").get((req, res) => {
     .delete((req, res) => {
         return res.json({ message: 'User Deleted' });
     });
+
 app.post('/api/users', (req, res) => {
     const body = req.body;
-    body.id = users.length + 1;
-    users.push(body);
-    fs.writeFile("MOCK_DATA.json", JSON.stringify(users), (err, data) => {
-        return res.json({ message: 'User Created'});
+    
+    if (!body.first_name || !body.last_name || !body.email || !body.gender || !body.job_title) {
+        return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const newUser = { ...body, id: users.length + 1 };
+    users.push(newUser);
+
+    fs.writeFile("./MOCK_DATA.json", JSON.stringify(users, null, 2), (err) => {
+        if (err) {
+            console.error("Error writing to file:", err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        return res.status(201).json({ message: 'User Created', user: newUser });
     });
 });
-
-
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`)
 });
+

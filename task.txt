@@ -1,7 +1,7 @@
 REST API -JSON
 
 GET /users - HTML Document render
-GET/api/users - List all users
+GET/api/users - List all users JSON
 GET /users/1- Get the user with ID 1
 GET /users/2- Get the user with ID 2
 
@@ -12,4 +12,9 @@ GET /api/users/:id
 POST /users - Create new user
 PATCH /users/1 - EDit the user with ID 1
 
-Delete /users/1 - De;ete y
+Delete /users/1 - Delete y
+in mongooose, you have a schema in which you define the structure
+using that schema we make model . using model we do crud operations.
+Schema - Define the sructure
+schema- model
+Using Model we do CRUD operations.

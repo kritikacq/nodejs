@@ -46,20 +46,15 @@
 // server.listen(8000, () => {
 //     console.log(`Server running at http://8000/`);
 // });
-
-
-
-
-
 //day 4
-// const express = require('express');
-// const app = express();
-// app.get('/', (req, res) => {
-//     return res.send('Hello From Express\n');
-// });
-// app.get('/about', (req, res) => {
-//     return res.send( 'hey' + req.query.username);
-// });
+const express = require('express');
+const app = express();
+app.get('/', (req, res) => {
+    return res.send('Hello From Express\n');
+});
+app.get('/about', (req, res) => {
+    return res.send( 'hey' + req.query.username);
+});
 const myServer = http.createServer(app);
 server.listen(8000, () => {
 //     console.log(`Server running at http://8000/`);
@@ -67,34 +62,165 @@ server.listen(8000, () => {
 
 app.listen(80000,()=> console.log("server started"));
 
-//day 7
-function dosomething() {
-    throw new Error(
-        'a error is thrown from dosomething');
-}
-
-function init() {
-    try {
-        dosomething();
-    }
-    catch (e) {
-        console.log(e);
-    }
-    console.log(
-        "After successful error handling");
-}
-
-init();
+// mongoose.connect("mongodb://kritikasharma:ESnWxVEVE5jdSFk8@cluster1-shard-00-00.c0snc.mongodb.net:27017,cluster1-shard-00-01.c0snc.mongodb.net:27017,cluster1-shard-00-02.c0snc.mongodb.net:27017/?replicaSet=atlas-sw4qog-shard-0&ssl=true&authSource=admin&retryWrites=true&w=majority&appName=Cluster1/project1")
+//     .then(() => {
+//         console.log("Connected to MongoDB!");
+//     })
+//     .catch((err) => {
+//         console.error("Error connecting to MongoDB:", err);
+//     });
+//
 
 
 
-// fs.readFile('code.txt', function (err, data) {
-//     if (err) {
-//         console.error(err);
+// // //day 7
+// // function dosomething() {
+// //     throw new Error(
+// //         'a error is thrown from dosomething');
+// // }
+
+// // function init() {
+// //     try {
+// //         dosomething();
+// //     }
+// //     catch (e) {
+// //         console.log(e);
+// //     }
+// //     console.log(
+// //         "After successful error handling");
+// // }
+
+// // init();
+
+
+
+// // fs.readFile('code.txt', function (err, data) {
+// //     if (err) {
+// //         console.error(err);
+// //     }
+// //     else {
+// //         console.log(data.toString());
+// //     }
+// // });
+// // console.log("Program Ended");
+
+//mongodb 
+
+// const express = require('express');
+// const mongoose = require('mongoose');
+// require('dotenv').config(); // Load environment variables from .env file
+// //const { userSchema } = require("./models/user");
+
+// const  users = require("./MOCK_DATA.json");
+// const fs = require("fs");
+// const app = express();
+// const mongodb = require('mongodb');
+// //connection
+// mongoose.connect(process.env.MONGO_URI)
+//     .then(() => {
+//         console.log("Connected to MongoDB!");
+//     })
+//     .catch((err) => {
+//         console.error("Error connecting to MongoDB:", err);
+//     });
+// //Schema
+// const userSchema = new mongoose.Schema({
+//     firstName: {
+//         type: String,
+//         required: true
+//     },
+//     lastName: {
+//         type: String,
+//         required: true
+//     },
+//     email: {
+            
+
+//         type: String,
+//         required: true,
+//         unique: true,
+//     },
+    
+//     jobTitle: {
+            
+//         type: String,
+//     },
+//     gender: {
+//         type: String,
+//     },
+// },
+//     { timestamps: true }
+// );
+// //model
+// const User = mongoose.model('User', userSchema);
+
+// //middleware
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.json()); // Add this middleware to parse JSON request bodies
+// app.use((req, res, next) => {
+//     fs.appendFile("log.txt", `Request Type: ${req.method}\n`, (err) => {
+
+//         if (err) {
+//             console.error("Error writing to log file:", err);
+//         }
+//         next();
 //     }
-//     else {
-//         console.log(data.toString());
-//     }
+//     );
 // });
 
-// console.log("Program Ended");
+// // Routes
+// app.get('/api/users', async (req, res) => {
+//     const allDbUsers = await User.find({});
+//     res.json(allDbUsers);
+//     //res.json(users);
+// }
+// );
+// app.get('/users', async (req, res) => {
+//     const allDbUsers = await User.find({});
+//     const html = `
+//     <ul>
+//     ${allDbUsers.map((user) => `<li>${user.firstName} - ${user.email}</li>`).join('')}
+//     </ul>
+//     `;
+//     //res.send(allDbUsers);
+//     res.send(html);
+//     //console.log(`Server  is running at http://localhost:${port}/`);
+// });
+
+// app.post('/api/users', async (req, res) => {
+//     const body = req.body;
+//     console.log(body);
+//         if (!body || !body.firstName || !body.lastName || !body.email || !body.gender || !body.jobTitle) {
+//             return res.status(400).json({ msg: "Missing required fields" });
+//     }
+    
+//      const result = await User.create({
+//     firstName: body.firstName,
+//         lastName: body.lastName,
+//         email: body.email,
+//         gender: body.gender,
+//         jobTitle: body.jobTitle
+//     });
+//     console.log("result", result);
+//         return res.status(201).json({ msg: "success" });
+// });
+// app.route("/api/users/:id")
+//     .get(async (req, res) => {
+//         const user = await User.findById(req.params.id);
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
+//         return res.json(user);
+//     })
+//     .patch(async (req, res) => {
+//         const user = await User.findByIdAndUpdate(req.params.id, { lastName: "Changed" }, { new: true });
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
+//         return res.json(user);
+//     }
+//     );
+// app.listen(8081, () => {
+//     console.log("Server is running on port 8081");
+// });
+//user calls route, route calls controller, controller change model and we reaad data from models and put it in views.
